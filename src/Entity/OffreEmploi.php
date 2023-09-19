@@ -22,6 +22,10 @@ class OffreEmploi
     #[ORM\Column(length: 255)]
     private ?string $type_contrat = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $ref_user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class OffreEmploi
     public function setTypeContrat(string $type_contrat): static
     {
         $this->type_contrat = $type_contrat;
+
+        return $this;
+    }
+
+    public function getRefUser(): ?User
+    {
+        return $this->ref_user;
+    }
+
+    public function setRefUser(?User $ref_user): static
+    {
+        $this->ref_user = $ref_user;
 
         return $this;
     }
