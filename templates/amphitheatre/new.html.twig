@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Amphitheatre{% endblock %}
+
+{% block body %}
+    <h1>Créer nouvel Amphitheatre</h1>
+
+    {{ include('amphitheatre/_form.html.twig') }}
+
+<button type="button" class="btn btn-outline-info">
+    <a href="{{ path('app_amphitheatre_index') }}">Retour à la liste</a>
+</button>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion Amphitheatre{% endblock %}
+
+{% block body %}
+    <h1>Gestion Amphitheatre</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Place_libre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for amphitheatre in amphitheatres %}
+            <tr>
+                <td>{{ amphitheatre.id }}</td>
+                <td>{{ amphitheatre.placeLibre }}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-info">
+                    <a href="{{ path('app_amphitheatre_show', {'id': amphitheatre.id}) }}">show</a>    </button>
+                        <button type="button" class="btn btn-outline-info">
+                        <a href="{{ path('app_amphitheatre_edit', {'id': amphitheatre.id}) }}">edit</a>    </button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas encore d'amphithéatres</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-outline-info">
+    <a href="{{ path('app_amphitheatre_new') }}">Créer</a>
+    </button>
+
+
+{% endblock %}
