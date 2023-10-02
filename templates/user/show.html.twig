@@ -5,12 +5,9 @@
 {% block body %}
     <h1>User</h1>
 
-    <table class="table">
+    <table class="table-light" class="text-secondary">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
+
             <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
@@ -35,10 +32,7 @@
                 <th>Adresse</th>
                 <td>{{ user.adresse }}</td>
             </tr>
-            <tr>
-                <th>Role</th>
-                <td>{{ user.role }}</td>
-            </tr>
+
             <tr>
                 <th>Domaine_etude</th>
                 <td>{{ user.domaineEtude }}</td>
@@ -54,9 +48,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    <td> <th> <a href="{{ path('app_user_index') }}">
+        <button type="button" class="btn btn-outline-light">RETOUR</button></a></td></th>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+    <td> <th> <a href="{{ path('app_user_edit', {'id': app.user.id}) }}">
+        <button type="button" class="btn btn-outline-light">MODIFIER</button></a></td></th>
 
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

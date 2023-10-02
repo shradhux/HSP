@@ -38,8 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $role = null;
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $domaine_etude = null;
@@ -156,17 +155,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
 
-    public function setRole(?string $role): static
-    {
-        $this->role = $role;
 
-        return $this;
-    }
 
     public function getDomaineEtude(): ?string
     {

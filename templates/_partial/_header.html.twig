@@ -1535,7 +1535,7 @@
                 <!--end::Menu-->
                 <!--end::Menu wrapper-->
             </div>
-            
+
             <!--end::Notifications-->
             #}
             <!--begin::User-->
@@ -1593,7 +1593,7 @@
                                 <div class="fw-bolder d-flex align-items-center fs-5">{{ app.user.nom }} {{ app.user.prenom }}
                                     <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">
                                         {% if (app.user.roles[0]== 'ROLE_USER') %}
-                                            PROFESSEUR
+                                            User
                                         {% endif %}
                                         {% if (app.user.roles[0] == 'ROLE_ADMIN') %}
                                             ADMIN
