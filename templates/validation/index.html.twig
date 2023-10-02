@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Validation index{% endblock %}
+
+{% block body %}
+    <h1>Validation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for validation in validations %}
+            <tr>
+                <td>{{ validation.id }}</td>
+                <td>
+                    <a href="{{ path('app_validation_show', {'id': validation.id}) }}">show</a>
+                    <a href="{{ path('app_validation_edit', {'id': validation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_validation_new') }}">Create new</a>
+{% endblock %}

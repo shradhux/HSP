@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/conference')]
 class ConferenceController extends AbstractController
 {
-    #[Route('/', name: 'app_conference_index', methods: ['GET'])]
+    #[Route('/', name: 'app_conference_index', methods: ['GET', 'POST'])]
     public function index(ConferenceRepository $conferenceRepository): Response
     {
         return $this->render('conference/index.html.twig', [
