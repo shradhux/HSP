@@ -24,8 +24,10 @@
            value="{{ csrf_token('authenticate') }}"
     >
 
-    <button class="btn btn-lg btn-primary" type="submit">
+    <button class="btn btn-lg btn-primary mt-3" type="submit">
         Sign in
     </button>
+    <a href="{{ path('app_forgot_password_request') }}" class="btn btn-secondary mt-3">Mot de passe oublié</a>
+    <a href="{{ path('app_register') }}" class="btn btn-secondary mt-3">S'inscrire</a>
 </form>
 {% endblock %}
