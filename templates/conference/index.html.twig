@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conference index{% endblock %}
+
+{% block body %}
+    <h1>Conference index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Duree</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for conference in conferences %}
+            <tr>
+                <td>{{ conference.id }}</td>
+                <td>{{ conference.nom }}</td>
+                <td>{{ conference.description }}</td>
+                <td>{{ conference.date ? conference.date|date('Y-m-d') : '' }}</td>
+                <td>{{ conference.heure }}</td>
+                <td>{{ conference.duree }}</td>
+                <td>
+                    <a href="{{ path('app_conference_show', {'id': conference.id}) }}">show</a>
+                    <a href="{{ path('app_conference_edit', {'id': conference.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_conference_new') }}">Create new</a>
+{% endblock %}
