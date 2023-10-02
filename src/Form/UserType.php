@@ -18,7 +18,16 @@ class UserType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('adresse')
-            ->add('role')
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'ROLE_ADMIN' => 'ROLE_ADMIN',
+                    'ROLE_USER' => 'ROLE_USER',
+
+
+                ],
+                'multiple' => true, // Si vous souhaitez autoriser plusieurs rôles à être sélectionnés, sinon définissez à false
+                'expanded' => true, // Si vous souhaitez afficher les rôles sous forme de cases à cocher, sinon définissez à false
+            ])
             ->add('domaine_etude')
             ->add('est_valide')
             ->add('isVerified')
