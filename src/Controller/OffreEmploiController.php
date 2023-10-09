@@ -50,6 +50,14 @@ class OffreEmploiController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'app_offre_emploi_etudiant', methods: ['GET'])]
+    public function etudiant(OffreEmploi $offreEmploi): Response
+    {
+        return $this->render('offre_emploi/etudiant.html.twig', [
+            'offre_emploi' => $offreEmploi,
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'app_offre_emploi_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, OffreEmploi $offreEmploi, EntityManagerInterface $entityManager): Response
     {

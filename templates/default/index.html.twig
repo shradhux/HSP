@@ -59,8 +59,6 @@
 <table align="center">
 
 
-
-
     <tr align="center"><th><a href="{{ path('app_amphitheatre_index') }}"><button class="btn btn-outline-primary" role="button">Gestion Amphitheatre</button></a></th></tr>
     <tr align="center"><th><a href="{{ path('app_conference_index') }}"><button class="btn btn-outline-secondary" role="button">Gestion Conférence</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_offre_emploi_index') }}"><button class="btn btn-outline-success" role="button">Gestion Offre d'emplois</button></a></th> </tr>
@@ -68,7 +66,9 @@
     <tr align="center"><th><a href="{{ path('app_postuler_index') }}"><button class="btn btn-outline-warning" role="button">Gestion Postulations</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_validation_index') }}"><button class="btn btn-outline-danger" role="button">Gestion Validation</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_creation_index') }}"><button class="btn btn-outline-light" role="button">Gestion Création</button></a></th> </tr>
-
+    <tr align="center"><th><a href="{{ path('app_validation_index') }}"><button class="btn btn-outline-primary" role="button">Valider comptes</button></a></th></tr>
+    <tr align="center"><th><a href="{{ path('app_validation_index') }}"><button class="btn btn-outline-primary" role="button">Postuler Etudiant</button></a></th></tr>
+    <tr align="center"><th><a href="{{ path('app_offre_emploi_etudiant', {'id': app.user.id})  }}"><button class="btn btn-outline-primary" role="button">Voir offres d'emplois</button></a></th></tr>
     </tr>
 </table>
 
