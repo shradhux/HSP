@@ -3,7 +3,8 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>User </h1>
+    {% if app.user.roles[0] == "ROLE_ADMIN"  %}
 
     <table class="table">
         <thead>
@@ -46,6 +47,48 @@
         {% endfor %}
         </tbody>
     </table>
+    {% elseif app.user.roles[0] == "ROLE_USER"%}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Password</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Adresse</th>
+            <th>Domaine_etude</th>
+            <th>Est_valide</th>
+            <th>IsVerified</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ app.user.id }}</td>
+                <td>{{ app.user.email }}</td>
+                <td>{{ app.user.roles ? app.user.roles|json_encode : '' }}</td>
+                <td>{{ app.user.password }}</td>
+                <td>{{ app.user.nom }}</td>
+                <td>{{ app.user.prenom }}</td>
+                <td>{{ app.user.adresse }}</td>
+                <td>{{ app.user.domaineEtude }}</td>
+                <td>{{ app.user.estValide ? 'Yes' : 'No' }}</td>
+                <td>{{ app.user.isVerified ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_user_edit', {'id': app.user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+                <tr>
+                    <td colspan="7">aucunes données trouvées</td>
+                </tr>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+                </tbody>
+                </table>
+
+    {% endif %}
+
+
 {% endblock %}
