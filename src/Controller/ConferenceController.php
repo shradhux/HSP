@@ -27,7 +27,10 @@ class ConferenceController extends AbstractController
     {
         $conference = new Conference();
         $form = $this->createForm(ConferenceType::class, $conference);
+        $form->remove('ref_user');
         $form->handleRequest($request);
+        $conference-> setRefUser($this->getUser());
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($conference);
