@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}OffreEmploi index{% endblock %}
+{% block title %}OffreEmploiEtudiant{% endblock %}
 
 {% block body %}
-    <h1>OffreEmploi index</h1>
+    <h1>OffreEmploiEtudiant</h1>
 
     <table class="table">
         <thead>
@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for offre_emploi in offre_emplois %}
+        {% for offre_emploi in OffreEmploiEtudiant %}
             <tr>
                 <td>{{ offre_emploi.id }}</td>
                 <td>{{ offre_emploi.titre }}</td>
@@ -24,7 +24,7 @@
                 <td>{{ offre_emploi.typeContrat }}</td>
                 <td>
                     <a href="{{ path('app_offre_emploi_show', {'id': offre_emploi.id}) }}">show</a>
-                    <a href="{{ path('app_offre_emploi_edit', {'id': offre_emploi.id}) }}">edit</a>
+
                 </td>
             </tr>
         {% else %}
