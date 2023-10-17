@@ -51,10 +51,10 @@ class OffreEmploiController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_offre_emploi_etudiant', methods: ['GET'])]
-    public function etudiant(OffreEmploi $offreEmploi): Response
+    public function etudiant(OffreEmploi $offreEmploiEtudiant): Response
     {
         return $this->render('offre_emploi/etudiant.html.twig', [
-            'offre_emploi' => $offreEmploi,
+            'offre_emploi_etudiant' => $offreEmploiEtudiant,
         ]);
     }
 
