@@ -30,9 +30,9 @@ class UserType extends AbstractType
             ])
             ->add('domaine_etude')
             ->add('est_valide')
-            ->add('isVerified')
-        ;
-    }
+            ->add('isVerified');
+            }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

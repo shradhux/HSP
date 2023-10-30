@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserSecurity;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,20 +54,58 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $currentUser = $this->getUser(); // Récupérer l'utilisateur actuel
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+        if ($currentUser !== null) {
+            $isAdmin = in_array("ROLE_ADMIN", $currentUser->getRoles());
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            // Vérifier si l'utilisateur actuel est un administrateur et s'il tente de modifier son propre mot de passe
+            $isEditingOwnPassword = $isAdmin && $currentUser === $user;
+
+            $form = $this->createForm(UserType::class, $user);
+            if ($user->getRoles()[0]=="ROLE_USER" ){
+                $form->remove("roles");
+                $form->remove("est_valide");
+                $form->remove("isVerified");
+            }
+
+            // Si l'utilisateur n'est pas en train de modifier son propre mot de passe, retirez le champ de mot de passe du formulaire
+            if (!$isEditingOwnPassword) {
+                $form->remove('password');
+            }
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // Empêcher un administrateur de modifier le mot de passe des autres utilisateurs
+                if ($isAdmin && !$isEditingOwnPassword) {
+                    throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier le mot de passe des autres utilisateurs.');
+                }
+
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $form,
+            ]);
+        } else {
+            return $this->redirectToRoute('app_default');
+            // Gérer le cas où l'utilisateur n'est pas authentifié, par exemple, rediriger vers une page de connexion
         }
-
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
     }
+   // #[Route('/{id}/activity', name: 'user_security_activity', methods: ['GET', 'POST'])]
+    //public function activity(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    //{
+      //  $userSecurity->setEstActif(!$userSecurity->isEstActif());
+        //$entityManager->persist($userSecurity);
+        //$entityManager->flush();
+        //$this->addFlash("success", "L'utilisateur a bien été " . (($userSecurity->isEstActif()) ? "activé" : "désactivé"));
+        //return $this->redirectToRoute('user_security_index', [], Response::HTTP_SEE_OTHER);
+    //}
+
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response

@@ -4,11 +4,18 @@
 </script>
 {{ form_start(form) }}
 
+
 <div class="form-group">
     <label for="exampleInputEmail1" class="form-label mt-4">Email</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={{ form_widget(form.email) }}>
+    <input type="email" class="form-control {% if form.email.vars.valid %}is-valid{% elseif form.email.vars.validated %}is-validated{% elseif form.email.vars.errors|length > 0 %}is-invalid{% endif %}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={{ form_widget(form.email) }}>
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    {% if form.email.vars.errors|length > 0 %}
+        <div class="invalid-feedback">
+            {{ form_errors(form.email) }}
+        </div>
+    {% endif %}
 </div>
+
 <div class="form-group">
     <label for="exampleInputPassword1" class="form-label mt-4">Nom</label>
     <input type="Nom" class="form-control" id="Nom" placeholder={{ form_widget(form.nom) }}>
@@ -27,12 +34,8 @@
 </div>
 
         {% if form.password is defined %}
-            <div class="form-group">
-                <label for="exampleInputPassword1" class="form-label mt-4">Mot de passe</label>
-                <input type="mdp" class="form-control" id="mdp" placeholder={{ form_widget(form.password) }} >
-                <small id="nom" class="form-text text-muted">Entrez votre nouveau mot de passe.</small>
-            </div>
-            <label>
+
+            <label> Password
                 <input type="password" placeholder={{ form_widget(form.password) }}>
 
                 <div class="password-icon">
@@ -46,11 +49,7 @@
     <input type="adresse" class="form-control" id="adresse" placeholder={{ form_widget(form.domaine_etude) }} >
     <small id="nom" class="form-text text-muted">Entrez votre domaine d'étude</small>
 </div>
-<div class="form-group">
-    <label for="exampleInputPassword1" class="form-label mt-4">Adresse</label>
-    <input type="adresse" class="form-control" id="adresse" placeholder={{ form_widget(form.adresse) }} >
-    <small id="nom" class="form-text text-muted">Entrez votre adresse</small>
-</div>
+
 
 
     <button class="btn">{{ button_label|default('Save') }}</button>
