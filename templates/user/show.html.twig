@@ -13,7 +13,18 @@
 
                 <td>{{ user.email }}</td>
             </tr>
-            <tr>
+{#  {% if user.roles is defined %}
+                <tr>
+                    <th>Roles</th>
+                    <td>
+                        {% for role in user.roles %}
+                            {{ role }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
+#}
+           <tr>
                 <th>Roles</th>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
             </tr>

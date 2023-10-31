@@ -8,6 +8,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -63,11 +64,18 @@ class UserController extends AbstractController
             $isEditingOwnPassword = $isAdmin && $currentUser === $user;
 
             $form = $this->createForm(UserType::class, $user);
-            if ($user->getRoles()[0]=="ROLE_USER" ){
+            if (!$currentUser->hasRole("ROLE_ADMIN")){
                 $form->remove("roles");
                 $form->remove("est_valide");
                 $form->remove("isVerified");
             }
+            if (!$currentUser->hasRole("ROLE_HOPITAL")){
+                $form->remove("roles");
+                $form->remove("est_valide");
+                $form->remove("isVerified");
+            }
+
+
 
             // Si l'utilisateur n'est pas en train de modifier son propre mot de passe, retirez le champ de mot de passe du formulaire
             if (!$isEditingOwnPassword) {
@@ -78,7 +86,7 @@ class UserController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 // Empêcher un administrateur de modifier le mot de passe des autres utilisateurs
-                if ($isAdmin && !$isEditingOwnPassword) {
+                if ($user->getRoles()==["ROLE_ADMIN"]) {
                     throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier le mot de passe des autres utilisateurs.');
                 }
 
@@ -96,15 +104,9 @@ class UserController extends AbstractController
             // Gérer le cas où l'utilisateur n'est pas authentifié, par exemple, rediriger vers une page de connexion
         }
     }
-   // #[Route('/{id}/activity', name: 'user_security_activity', methods: ['GET', 'POST'])]
-    //public function activity(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    //{
-      //  $userSecurity->setEstActif(!$userSecurity->isEstActif());
-        //$entityManager->persist($userSecurity);
-        //$entityManager->flush();
-        //$this->addFlash("success", "L'utilisateur a bien été " . (($userSecurity->isEstActif()) ? "activé" : "désactivé"));
-        //return $this->redirectToRoute('user_security_index', [], Response::HTTP_SEE_OTHER);
-    //}
+
+
+
 
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]

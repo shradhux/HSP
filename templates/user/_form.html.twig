@@ -49,9 +49,9 @@
     <input type="adresse" class="form-control" id="adresse" placeholder={{ form_widget(form.domaine_etude) }} >
     <small id="nom" class="form-text text-muted">Entrez votre domaine d'étude</small>
 </div>
-
-
-
+{% if not app.user.role("ROLE_ADMIN") %}
+{{ form_widget(form) }}
+{% endif %}
     <button class="btn">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}
