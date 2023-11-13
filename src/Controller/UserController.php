@@ -68,11 +68,7 @@ class UserController extends AbstractController
                 $form->remove("roles");
                 $form->remove("est_valide");
                 $form->remove("isVerified");
-            }
-            if (!$currentUser->hasRole("ROLE_HOPITAL")){
-                $form->remove("roles");
-                $form->remove("est_valide");
-                $form->remove("isVerified");
+                $form->remove("domaine_etude");
             }
 
 
