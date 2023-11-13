@@ -1,0 +1,25 @@
+
+
+<h1>Validation des conférences</h1>
+
+{% if pendingConferences is empty %}
+    <p>Aucune conférence en attente de validation.</p>
+{% else %}
+    <ul>
+        <table>
+            <td>zer</td>
+            <tr>ed</tr>
+
+            <tr>
+        {% for conference in pendingConferences %}
+            <li>
+                {{ conference.nom }} - {{ conference.duree }}
+
+                <a href="{{ path('admin_conference_validation_page', {'id': conference.id}) }}">Valider</a>
+            </li>
+        {% endfor %}
+                </td>
+            </tr>
+        </table>
+    </ul>
+{% endif %}

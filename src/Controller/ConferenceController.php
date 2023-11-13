@@ -21,6 +21,15 @@ class ConferenceController extends AbstractController
             'conferences' => $conferenceRepository->findAll(),
         ]);
     }
+    #[Route('/admin/conference/validation', name: 'admin_conference_validation_page')]
+    public function conferenceValidationPage(EntityManagerInterface $entityManager): Response
+    {
+        $pendingConferences = $entityManager->getRepository(Conference::class)->findBy(['isValidated' => false]);
+
+        return $this->render('conference/conference_validation.html.twig', [
+            'pendingConferences' => $pendingConferences,
+        ]);
+    }
 
     #[Route('/new', name: 'app_conference_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -29,14 +38,29 @@ class ConferenceController extends AbstractController
         $form = $this->createForm(ConferenceType::class, $conference);
         $form->remove('ref_user');
         $form->handleRequest($request);
-        $conference-> setRefUser($this->getUser());
 
+        $user = $this->getUser();
+
+        if ($user && in_array('ROLE_ADMIN', $user->getRoles())) {
+            // L'administrateur crée la conférence
+            $conference->setIsValidated(true); // Automatiquement validé par l'administrateur
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Si ce n'est pas un administrateur, définissez isValidated sur false, l'administrateur validera plus tard
+            if (!$conference->getIsValidated()) {
+                $conference->setIsValidated(false);
+            }
+
             $entityManager->persist($conference);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
+            if ($user && in_array('ROLE_ADMIN', $user->getRoles())) {
+                return $this->redirectToRoute('admin_conference_validation_page');
+            } else {
+
+                return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('conference/new.html.twig', [
@@ -44,6 +68,7 @@ class ConferenceController extends AbstractController
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_conference_show', methods: ['GET'])]
     public function show(Conference $conference): Response
