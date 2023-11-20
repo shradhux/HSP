@@ -21,7 +21,29 @@ class ValidationController extends AbstractController
             'validations' => $validationRepository->findAll(),
         ]);
     }
+   /*
+    #[Route('/validate-account/{id}', name: 'app_validate_account')]
+    public function validateAccount(User $user, Request $request)
+    {
+        $form = $this->createForm(ValidationType::class);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setIsVerified(true);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre compte a été validé avec succès.');
+
+            return $this->redirectToRoute('app_validation_index');
+        }
+
+        return $this->render('account/validation.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+*/
     #[Route('/new', name: 'app_validation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

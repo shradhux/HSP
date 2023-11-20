@@ -20,6 +20,11 @@ class Conference
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
+
+
+    #[ORM\Column(type: 'boolean')]
+    private $isValidated = false;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -74,6 +79,16 @@ class Conference
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+    public function getIsValidated(): bool
+    {
+        return $this->isValidated;
+    }
+    public function setIsValidated(bool $isValidated): self
+    {
+        $this->isValidated = $isValidated;
 
         return $this;
     }

@@ -100,8 +100,27 @@ class UserController extends AbstractController
             // Gérer le cas où l'utilisateur n'est pas authentifié, par exemple, rediriger vers une page de connexion
         }
     }
+    #[Route('/valide-compte/{id}', name: 'app_valide_compte')]
+    public function valideCompte(User $user, Request $request)
+    {
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setIsVerified(true);
 
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre compte a été validé avec succès.');
+
+            return $this->redirectToRoute('app_validation_index');
+        }
+
+        return $this->render('account/validation.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
 
 
@@ -115,4 +134,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
