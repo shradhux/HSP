@@ -51,9 +51,9 @@ class OffreEmploiController extends AbstractController
     }
 
     #[Route('/{id}/etudiant', name: 'app_offre_emploi_etudiant', methods: ['GET'])]
-    public function etudiant(OffreEmploi $offreEmploiEtudiant): Response
+    public function etudiant(OffreEmploiRepository $offreEmploiEtudiant): Response
     {
-        return $this->render('offre_emploi/etudiant.html.twig', [
+        return $this->render('offre_emploi/etudiant_index.html.twig', [
             'offre_emploi_etudiant' => $offreEmploiEtudiant->findAll(),
         ]);
     }
