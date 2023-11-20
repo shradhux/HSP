@@ -22,13 +22,23 @@
                 <td>{{ offre_emploi.titre }}</td>
                 <td>{{ offre_emploi.description }}</td>
                 <td>{{ offre_emploi.typeContrat }}</td>
-                <td>{{ offre_emploi.refUser }}</td>
 
-                <td>    <form method="POST" action="{{ path('app_postuler_etudiant', {'id': offre_emploi.id})
-                    }}">
-                        <button type="submit">Postuler</button>
-                    </form>
 
+                <td>
+                    {% set dejapostule = 0 %}
+                    {% for postulation in postulations %}
+
+                    {% if postulation.user.id == app.user.id and offre_emploi.id == postulation.offreEmploi.id %}
+                        {% set dejapostule = 1 %}
+                        Vous avez déjà postulé à cette offre
+                    {% endif %}
+                    {% endfor %}
+                    {% if dejapostule == 0 %}
+                        <form method="POST" action="{{ path('app_postuler_etudiant', {'id': offre_emploi.id})
+                        }}">
+                            <button type="submit">Postuler</button>
+                        </form>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

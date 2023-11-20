@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\OffreEmploi;
+use App\Entity\Postuler;
 use App\Form\OffreEmploiType;
 use App\Repository\OffreEmploiRepository;
+use App\Repository\PostulerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,10 +53,11 @@ class OffreEmploiController extends AbstractController
     }
 
     #[Route('/{id}/etudiant', name: 'app_offre_emploi_etudiant', methods: ['GET'])]
-    public function etudiant(OffreEmploiRepository $offreEmploiEtudiant): Response
+    public function etudiant(OffreEmploiRepository $offreEmploiEtudiant, PostulerRepository $postuler): Response
     {
         return $this->render('offre_emploi/etudiant_index.html.twig', [
             'offre_emploi_etudiant' => $offreEmploiEtudiant->findAll(),
+            'postulations' => $postuler->findAll(),
         ]);
     }
 

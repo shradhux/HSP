@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\RendezVous;
-use App\Form\RendezVous1Type;
+use App\Form\RendezVousType;
 use App\Repository\RendezVousRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 #[Route('/rendez/vous')]
 class RendezVousController extends AbstractController
@@ -26,7 +27,7 @@ class RendezVousController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $rendezVou = new RendezVous();
-        $form = $this->createForm(RendezVous1Type::class, $rendezVou);
+        $form = $this->createForm(RendezVousType::class, $rendezVou);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +54,7 @@ class RendezVousController extends AbstractController
     #[Route('/{id}/edit', name: 'app_rendez_vous_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, RendezVous $rendezVou, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(RendezVous1Type::class, $rendezVou);
+        $form = $this->createForm(RendezVousType::class, $rendezVou);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,10 +76,13 @@ class RendezVousController extends AbstractController
         return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/confirmation.html.twig', name: 'app_rendez_vous_confirmation', methods: ['POST'])]
-    public function rdvhopital(Request $request, RendezVous $rendezVous, EntityManagerInterface $entityManager, RendezVousRepository $lesrdv): Response
+    #[Route('/confirmation', name: 'app_rendez_vous_confirmation', methods: ['GET'])]
+    public function rdvhopital(RendezVousRepository $lesrdv): Response
     {
 
+
+        dump($lesrdv);
+        ob_start();
         return $this->render('rendez_vous/confirmation.html.twig', [
             'rendez_vous' => $lesrdv->findAll(),
         ]);
