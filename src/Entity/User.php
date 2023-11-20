@@ -37,11 +37,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
-
-
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $domaine_etude = null;
 
@@ -53,6 +48,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Postuler::class)]
     private Collection $postulers;
+
+    #[ORM\Column(length: 255)]
+    private ?string $rue = '';
+
+    #[ORM\Column(length: 255)]
+    private ?string $code_postal = '';
+
+    #[ORM\Column(length: 255)]
+    private ?string $ville = '';
 
     public function __construct()
     {
@@ -156,18 +160,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): static
-    {
-        $this->adresse = $adresse;
-
-        return $this;
-    }
-
 
 
 
@@ -185,7 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isEstValide(): ?bool
     {
-        return $this->est_valide;
+        return $this->est_valide=0;
     }
 
     public function setEstValide(bool $est_valide): static
@@ -197,7 +189,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isVerified(): bool
     {
-        return $this->isVerified;
+        return $this->isVerified=0;
     }
 
     public function setIsVerified(bool $isVerified): static
@@ -237,6 +229,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $postuler->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRue(): ?string
+    {
+        return $this->rue;
+    }
+
+    public function setRue(?string $rue): static
+    {
+        $this->rue = $rue;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->code_postal;
+    }
+
+    public function setCodePostal(?string $code_postal): static
+    {
+        $this->code_postal = $code_postal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): static
+    {
+        $this->ville = $ville;
 
         return $this;
     }
