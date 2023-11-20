@@ -14,12 +14,15 @@ class Postuler
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?RendezVous $rendez_vous = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?OffreEmploi $OffreEmploi = null;
+
+    #[ORM\ManyToOne(inversedBy: 'postulers')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -46,6 +49,18 @@ class Postuler
     public function setOffreEmploi(?OffreEmploi $OffreEmploi): static
     {
         $this->OffreEmploi = $OffreEmploi;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

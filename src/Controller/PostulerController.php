@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\OffreEmploi;
 use App\Entity\Postuler;
+use App\Entity\RendezVous;
+use App\Entity\User;
 use App\Form\PostulerType;
 use App\Repository\PostulerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,4 +82,21 @@ class PostulerController extends AbstractController
 
         return $this->redirectToRoute('app_postuler_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/etudiant', name: 'app_postuler_etudiant', methods: ['POST'])]
+    public function etudiant(Request $postuler, EntityManagerInterface $entityManager, Security $security, OffreEmploi $offreEmploi,Security $user): Response
+    {
+
+        $postulation = new Postuler();
+        $rdv = new RendezVous();
+        $postulation->setOffreEmploi($offreEmploi);
+        $postulation->setUser($security->getUser());
+        $postulation->setRendezVous($rdv);
+        $entityManager->persist($postulation);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_offre_emploi_etudiant', ['id' => $security->getUser('id')], Response::HTTP_SEE_OTHER);
+
+    }
+
 }

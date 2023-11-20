@@ -71,11 +71,17 @@ class RendezVousController extends AbstractController
     #[Route('/{id}', name: 'app_rendez_vous_delete', methods: ['POST'])]
     public function delete(Request $request, RendezVous $rendezVou, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$rendezVou->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($rendezVou);
-            $entityManager->flush();
-        }
 
         return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/confirmation.html.twig', name: 'app_rendez_vous_confirmation', methods: ['POST'])]
+    public function rdvhopital(Request $request, RendezVous $rendezVous, EntityManagerInterface $entityManager, RendezVousRepository $lesrdv): Response
+    {
+
+        return $this->render('rendez_vous/confirmation.html.twig', [
+            'rendez_vous' => $lesrdv->findAll(),
+        ]);
+    }
+
 }

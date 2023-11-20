@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -48,6 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Postuler::class)]
+    private Collection $postulers;
+
+    public function __construct()
+    {
+        $this->postulers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -199,5 +209,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * @return Collection<int, Postuler>
+     */
+    public function getPostulers(): Collection
+    {
+        return $this->postulers;
+    }
+
+    public function addPostuler(Postuler $postuler): static
+    {
+        if (!$this->postulers->contains($postuler)) {
+            $this->postulers->add($postuler);
+            $postuler->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostuler(Postuler $postuler): static
+    {
+        if ($this->postulers->removeElement($postuler)) {
+            // set the owning side to null (unless already changed)
+            if ($postuler->getUser() === $this) {
+                $postuler->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
