@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\RendezVous;
 use App\Form\RendezVousType;
+use App\Repository\PostulerRepository;
 use App\Repository\RendezVousRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -77,14 +78,33 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/confirmation', name: 'app_rendez_vous_confirmation', methods: ['GET'])]
-    public function rdvhopital(RendezVousRepository $lesrdv): Response
+    public function rdvhopital(PostulerRepository $lespostulations): Response
     {
 
 
 
         ob_start();
         return $this->render('rendez_vous/confirmation.html.twig', [
-            'rendez_vous' => $lesrdv->findAll(),
+            'postuler' => $lespostulations->findAll(),
+        ]);
+    }
+
+    #[Route('/newrdv', name: 'app_rendez_vous_ajout', methods: ['GET'])]
+    public function ajtrdv(Request $request, RendezVous $rendezVou, EntityManagerInterface $entityManager): Response
+    {
+
+        $form = $this->createForm(RendezVousType::class, $rendezVou);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('rendez_vous/edit.html.twig', [
+            'rendez_vou' => $rendezVou,
+            'form' => $form,
         ]);
     }
 

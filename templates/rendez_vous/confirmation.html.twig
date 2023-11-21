@@ -8,21 +8,23 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Heure</th>
+            <th>Nom de l'offre</th>
+            <th>Description de l'offre</th>
+            <th>Nom du postulant</th>
+            <th>Email du postulant</th>
             <th>actions</th>
         </tr>
         </thead>
         <tbody>
-        {% for rendez_vous in rendez_vous %}
+        {% for postulation in postuler %}
             <tr>
-                <td>{{ rendez_vous.id }}</td>
-                <td>{{ rendez_vous.date ? rendez_vous.date|date('Y-m-d') : '' }}</td>
-                <td>{{ rendez_vous.heure }}</td>
+                <td>{{ postulation.offreemploi.titre }}</td>
+                <td>{{ postulation.offreemploi.description }}</td>
+                <td>{{ postulation.user.nom }}</td>
+                <td>{{ postulation.user.email }}</td>
                 <td>
 
-                    <a href="{{ path('app_rendez_vous_edit', {'id': rendez_vous.id}) }}">edit</a>
+                    <a href="{{ path('app_rendez_vous_ajout', {'id': postulation.rendezVous.id}) }}">Proposer un rdv</a>
                 </td>
             </tr>
         {% else %}
