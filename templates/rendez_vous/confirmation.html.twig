@@ -21,7 +21,7 @@
                 <td>{{ rendez_vous.date ? rendez_vous.date|date('Y-m-d') : '' }}</td>
                 <td>{{ rendez_vous.heure }}</td>
                 <td>
-                    <a href="{{ path('app_rendez_vous_show', {'id': rendez_vous.id}) }}">show</a>
+
                     <a href="{{ path('app_rendez_vous_edit', {'id': rendez_vous.id}) }}">edit</a>
                 </td>
             </tr>

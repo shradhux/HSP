@@ -27,11 +27,7 @@
     <input type="prenom" class="form-control" id="prenom" placeholder={{ form_widget(form.prenom) }} >
     <small id="nom" class="form-text text-muted">Entrez votre prenom</small>
 </div>
-<div class="form-group">
-    <label for="exampleInputPassword1" class="form-label mt-4">Adresse</label>
-    <input type="adresse" class="form-control" id="adresse" placeholder={{ form_widget(form.adresse) }} >
-    <small id="nom" class="form-text text-muted">Entrez votre adresse</small>
-</div>
+
 
         {% if form.password is defined %}
 
@@ -47,7 +43,7 @@
 {% if app.user.role("ROLE_ETUDIANT") %}
 <div class="form-group">
     <label for="exampleInputPassword1" class="form-label mt-4">Domaine etude</label>
-    <input type="adresse" class="form-control" id="adresse" placeholder={{ form_widget(form.domaine_etude) }} >
+    <input type="domaine_etude" class="form-control" id="domaine_etude" placeholder={{ form_widget(form.domaine_etude) }} >
     <small id="nom" class="form-text text-muted">Entrez votre domaine d'étude</small>
 </div>
 {% endif %}

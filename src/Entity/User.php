@@ -177,7 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isEstValide(): ?bool
     {
-        return $this->est_valide=0;
+        return $this->est_valide;
     }
 
     public function setEstValide(bool $est_valide): static
@@ -189,7 +189,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isVerified(): bool
     {
-        return $this->isVerified=0;
+        return $this->isVerified;
     }
 
     public function setIsVerified(bool $isVerified): static

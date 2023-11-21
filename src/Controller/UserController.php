@@ -28,6 +28,9 @@ class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $user->setIsVerified(false); // Défaut à false
+        $user->setEstValide(false); // Défaut à false
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -103,7 +106,8 @@ class UserController extends AbstractController
     #[Route('/valide-compte/{id}', name: 'app_valide_compte')]
     public function valideCompte(User $user, Request $request)
     {
-        $form = $this->createForm(UserType::class);
+        // Passer l'entité User au formulaire
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

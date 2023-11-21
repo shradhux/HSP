@@ -43,14 +43,14 @@ class RendezVousController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_rendez_vous_show', methods: ['GET'])]
+/*    #[Route('/{id}', name: 'app_rendez_vous_show', methods: ['GET'])]
     public function show(RendezVous $rendezVou): Response
     {
         return $this->render('rendez_vous/show.html.twig', [
             'rendez_vou' => $rendezVou,
         ]);
     }
-
+*/
     #[Route('/{id}/edit', name: 'app_rendez_vous_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, RendezVous $rendezVou, EntityManagerInterface $entityManager): Response
     {
@@ -81,7 +81,7 @@ class RendezVousController extends AbstractController
     {
 
 
-        dump($lesrdv);
+
         ob_start();
         return $this->render('rendez_vous/confirmation.html.twig', [
             'rendez_vous' => $lesrdv->findAll(),

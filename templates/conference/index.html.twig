@@ -37,8 +37,10 @@
                 <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
+        {% if app.user.roles[0]=="ROLE_ADMIN" %}
 
         <tr align="center"><th><a href="{{ path('admin_conference_validation_page') }}"><button class="btn btn-outline-secondary" role="button">Valider Conférence</button></a></th> </tr>
+        {% endif %}
         </tbody>
     </table>
 
