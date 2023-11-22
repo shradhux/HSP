@@ -1,7 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Inscription{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+<script>
 
+    const checkbox = document.getElementsByName('checkRole');
+
+    checkbox.forEach(function(checkitem){
+        var value = checkitem.value;
+        checkitem.addEventListener('change', (event) => {
+            alert(value);
+        })
+    });
+
+</script>
+{% endblock %}
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -13,10 +27,16 @@
 
     {{ form_start(registrationForm) }}
 
+
+    <div class="form-group">
+        {{ form_label(registrationForm.roles, 'roles', {'label_attr': {'class': 'form-label mt-4'}}) }}
+        {{ form_widget(registrationForm.roles, {'attr': {'class': 'form-control'}}) }}
+    </div>
     <div class="form-group">
         {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
         {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre prénom'}}) }}
     </div>
+
     <div class="form-group">
         {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
         {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom'}}) }}
@@ -40,12 +60,18 @@
         {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre mail'}}) }}
     </div>
-
+    {#<div class="form-check form-switch">
+        <input class="form-check-input role-checkbox" type="checkbox" id="role1" name="Re" value="Role1">
+        <label class="form-check-label" for="">Role 1</label>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input role-checkbox" type="checkbox" id="role2" name="checkRole" value="Role2">
+        <label class="form-check-label" for="role2">Role 2</label>
+    </div>#}
     <div class="form-group">
         {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label mt-4'}}) }}
         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
     </div>
-
     {{ form_row(registrationForm.agreeTerms) }}
 
     <button type="submit" class="btn btn-secondary mt-3">Register</button>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +30,6 @@ class RegistrationController extends AbstractController
     {
 
 
-
         $user = new User();
         $user->setEstValide(false);
         $user->setIsVerified(false);
@@ -37,6 +37,10 @@ class RegistrationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $selectedRole = $user->getRoles();
+            $user->setRoles([$selectedRole]);
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
