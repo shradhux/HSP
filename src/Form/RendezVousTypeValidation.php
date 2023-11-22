@@ -2,18 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Postuler;
+use App\Entity\RendezVous;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PostulerType extends AbstractType
+class RendezVousTypeValidation extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('rendez_vous')
-            ->add('OffreEmploi')
+            ->add('date')
+            ->add('heure')
 
         ;
     }
@@ -21,7 +21,7 @@ class PostulerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Postuler::class,
+            'data_class' => RendezVous::class,
         ]);
     }
 }

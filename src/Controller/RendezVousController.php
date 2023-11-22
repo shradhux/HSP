@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\RendezVous;
+use App\Entity\User;
 use App\Form\RendezVousType;
+use App\Form\RendezVousTypeValidation;
 use App\Repository\PostulerRepository;
 use App\Repository\RendezVousRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -70,13 +73,13 @@ class RendezVousController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_rendez_vous_delete', methods: ['POST'])]
+  /*  #[Route('/{id}', name: 'app_rendez_vous_delete', methods: ['POST'])]
     public function delete(Request $request, RendezVous $rendezVou, EntityManagerInterface $entityManager): Response
     {
 
         return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
     }
-
+*/
     #[Route('/confirmation', name: 'app_rendez_vous_confirmation', methods: ['GET'])]
     public function rdvhopital(PostulerRepository $lespostulations): Response
     {
@@ -89,11 +92,12 @@ class RendezVousController extends AbstractController
         ]);
     }
 
-    #[Route('/newrdv', name: 'app_rendez_vous_ajout', methods: ['GET'])]
+    #[Route('/{id}/newrdv', name: 'app_rendez_vous_ajout', methods: ['GET', 'POST'])]
     public function ajtrdv(Request $request, RendezVous $rendezVou, EntityManagerInterface $entityManager): Response
     {
 
-        $form = $this->createForm(RendezVousType::class, $rendezVou);
+
+        $form = $this->createForm(RendezVousTypeValidation::class, $rendezVou);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -102,9 +106,28 @@ class RendezVousController extends AbstractController
             return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('rendez_vous/edit.html.twig', [
+        return $this->render('rendez_vous/validation.html.twig', [
             'rendez_vou' => $rendezVou,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/accepterrdv', name: 'app_rendez_vous_accepter_index', methods: ['GET', 'POST'])]
+    public function consultrdv(RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository, Security $user): Response
+    {
+
+
+
+        $rendezVouses = $rendezVousRepository->findBy([
+            'id' => $postulerRepository->findBy(['user' => $user->getUser() ]),
+            'date' => ['not ' => null],
+            'heure' => ['not ' => null]
+        ]);
+        dump($rendezVouses);
+
+
+        return $this->render('rendez_vous/index.html.twig', [
+            'rendez_vouses' => $rendezVouses,
         ]);
     }
 
