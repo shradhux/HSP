@@ -24,6 +24,8 @@ class RegistrationFormType extends AbstractType
             ->add('code_postal')
             ->add('ville')
             ->add('email')
+            ->add('domaine_etude')
+            ->add('role')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

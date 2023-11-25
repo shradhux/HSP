@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $ville = '';
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $role = null;
+
     public function __construct()
     {
         $this->postulers = new ArrayCollection();
@@ -266,6 +269,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVille(?string $ville): static
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): static
+    {
+        $this->role = $role;
 
         return $this;
     }

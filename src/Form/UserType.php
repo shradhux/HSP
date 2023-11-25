@@ -20,6 +20,7 @@ class UserType extends AbstractType
             ->add('rue')
             ->add('code_postal')
             ->add('ville')
+            ->add('role')
 
             ->add('roles', ChoiceType::class, [
                 'choices' => [

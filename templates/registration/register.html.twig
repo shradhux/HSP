@@ -1,21 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Inscription{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-<script>
 
-    const checkbox = document.getElementsByName('checkRole');
-
-    checkbox.forEach(function(checkitem){
-        var value = checkitem.value;
-        checkitem.addEventListener('change', (event) => {
-            alert(value);
-        })
-    });
-
-</script>
-{% endblock %}
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -27,14 +13,19 @@
 
     {{ form_start(registrationForm) }}
 
-
     <div class="form-group">
-        {{ form_label(registrationForm.roles, 'roles', {'label_attr': {'class': 'form-label mt-4'}}) }}
-        {{ form_widget(registrationForm.roles, {'attr': {'class': 'form-control'}}) }}
+        {{ form_label(registrationForm.roles, 'Roles', {'label_attr': {'class': 'form-label mt-4'}}) }}
+
+        {% for role in registrationForm.roles %}
+            <div class="form-check form-switch">
+                {{ form_widget(role, {'attr': {'class': 'form-check-input role-checkbox'}, 'id': 'role_' ~ role.vars.value}) }}
+                {{ form_label(role, null, {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
+        {% endfor %}
     </div>
     <div class="form-group">
         {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre prénom'}}) }}
+        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control prenom-field', 'placeholder': 'Entrez votre prénom'}}) }}
     </div>
 
     <div class="form-group">
@@ -60,20 +51,62 @@
         {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre mail'}}) }}
     </div>
-    {#<div class="form-check form-switch">
-        <input class="form-check-input role-checkbox" type="checkbox" id="role1" name="Re" value="Role1">
-        <label class="form-check-label" for="">Role 1</label>
-    </div>
-    <div class="form-check form-switch">
-        <input class="form-check-input role-checkbox" type="checkbox" id="role2" name="checkRole" value="Role2">
-        <label class="form-check-label" for="role2">Role 2</label>
-    </div>#}
+
     <div class="form-group">
         {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label mt-4'}}) }}
         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
     </div>
+    <div class="form-group">
+        {{ form_label(registrationForm.domaine_etude, null, {'label_attr': {'class': 'form-label mt-4 domaine-label'}}) }}
+        {{ form_widget(registrationForm.domaine_etude, {'attr': {'class': 'form-control domaine', 'placeholder': 'Entrez votre domaine d étude'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(registrationForm.role, null, {'label_attr': {'class': 'form-label mt-4 role-label'}}) }}
+        {{ form_widget(registrationForm.role, {'attr': {'class': 'form-control role', 'placeholder': 'Entrez votre role'}}) }}
+    </div>
     {{ form_row(registrationForm.agreeTerms) }}
 
-    <button type="submit" class="btn btn-secondary mt-3">Register</button>
+    <button type="submit" class="btn btn-secondary mt-3">S'inscrire</button>
     {{ form_end(registrationForm) }}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            updateDomaineEtudeVisibility();
+
+            // Écouter les changements dans la sélection du rôle
+            $('input.role-checkbox').change(function () {
+                updateDomaineEtudeVisibility();
+            });
+
+            function updateDomaineEtudeVisibility() {
+                // Vérifier si le rôle 'etudiant' est sélectionné
+                var etudiantSelected = $('input.role-checkbox[value="ROLE_HOPITAL"]').is(':checked');
+
+                // Masquer ou afficher le champ prenom en conséquence
+                if (etudiantSelected) {
+                    $('.domaine ,.domaine-label').hide();
+                } else {
+                    $('.domaine, .domaine-label').show();
+                }
+            }
+            updateRoleVisibility();
+
+            // Écouter les changements dans la sélection du rôle
+            $('input.role-checkbox').change(function () {
+                updateRoleVisibility();
+            });
+
+            function updateRoleVisibility() {
+                // Vérifier si le rôle 'etudiant' est sélectionné
+                var etudiantSelected = $('input.role-checkbox[value="ROLE_ETUDIANT"]').is(':checked');
+
+                // Masquer ou afficher le champ prenom en conséquence
+                if (etudiantSelected) {
+                    $('.role, .role-label').hide();
+                } else {
+                    $('.role, .role-label').show();
+                }
+            }
+        });
+    </script>
 {% endblock %}
