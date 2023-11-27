@@ -44,15 +44,9 @@ class OffreEmploiController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_offre_emploi_show', methods: ['GET'])]
-    public function show(OffreEmploi $offreEmploi): Response
-    {
-        return $this->render('offre_emploi/show.html.twig', [
-            'offre_emploi' => $offreEmploi,
-        ]);
-    }
 
-    #[Route('/{id}/etudiant', name: 'app_offre_emploi_etudiant', methods: ['GET'])]
+
+    #[Route('/etudiant', name: 'app_offre_emploi_etudiant', methods: ['GET'])]
     public function etudiant(OffreEmploiRepository $offreEmploiEtudiant, PostulerRepository $postuler): Response
     {
         return $this->render('offre_emploi/etudiant_index.html.twig', [
@@ -60,7 +54,13 @@ class OffreEmploiController extends AbstractController
             'postulations' => $postuler->findAll(),
         ]);
     }
-
+    #[Route('/{id}', name: 'app_offre_emploi_show', methods: ['GET'])]
+    public function show(OffreEmploi $offreEmploi): Response
+    {
+        return $this->render('offre_emploi/show.html.twig', [
+            'offre_emploi' => $offreEmploi,
+        ]);
+    }
     #[Route('/{id}/edit', name: 'app_offre_emploi_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, OffreEmploi $offreEmploi, EntityManagerInterface $entityManager): Response
     {

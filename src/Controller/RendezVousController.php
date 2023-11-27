@@ -112,18 +112,17 @@ class RendezVousController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/accepterrdv', name: 'app_rendez_vous_accepter_index', methods: ['GET', 'POST'])]
-    public function consultrdv(RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository, Security $user): Response
+    #[Route('/accepterrdv', name: 'app_rendez_vous_accepter_index', methods: ['GET', 'POST'])]
+    public function consultrdv(RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository): Response
     {
 
 
-
         $rendezVouses = $rendezVousRepository->findBy([
-            'id' => $postulerRepository->findBy(['user' => $user->getUser() ]),
+            'id' => $postulerRepository->findBy(['user' => $this->getUser() ]),
             'date' => ['not ' => null],
             'heure' => ['not ' => null]
         ]);
-        dump($rendezVouses);
+        //dump($rendezVouses);
 
 
         return $this->render('rendez_vous/index.html.twig', [

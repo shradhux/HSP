@@ -62,7 +62,6 @@ class UserController extends AbstractController
 
         if ($currentUser !== null) {
             $isAdmin = in_array("ROLE_ADMIN", $currentUser->getRoles());
-
             // Vérifier si l'utilisateur actuel est un administrateur et s'il tente de modifier son propre mot de passe
             $isEditingOwnPassword = $isAdmin && $currentUser === $user;
 
@@ -85,10 +84,13 @@ class UserController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 // Empêcher un administrateur de modifier le mot de passe des autres utilisateurs
+                if($form->has('roles')){
+                    $user->setRoles([$form->get('roles')->getData()]);
+                }
                 if ($user->getRoles()==["ROLE_ADMIN"]) {
                     throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier le mot de passe des autres utilisateurs.');
                 }
-
+                $entityManager->persist($user);
                 $entityManager->flush();
 
                 return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

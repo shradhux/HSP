@@ -25,12 +25,13 @@ class UserType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'ROLE_ADMIN' => 'ROLE_ADMIN',
-                    'ROLE_USER' => 'ROLE_USER',
+                   // 'ROLE_USER' => 'ROLE_USER',
                     'ROLE_HOPITAL' => 'ROLE_HOPITAL',
                     'ROLE_ETUDIANT' => 'ROLE_ETUDIANT',
                 ],
-                'multiple' => true,
+                //'multiple' => true,
                 'expanded' => true,
+                'mapped' => false,
             ])
             ->add('domaine_etude')
             ->add('est_valide')

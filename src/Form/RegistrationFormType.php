@@ -39,8 +39,9 @@ class RegistrationFormType extends AbstractType
                     'ROLE_HOPITAL' => 'ROLE_HOPITAL',
                     'ROLE_ETUDIANT' => 'ROLE_ETUDIANT',
                 ],
-                'multiple' => true,
+                //'multiple' => true,
                 'expanded' => true,
+                'mapped' => false,
             ])
 
 
