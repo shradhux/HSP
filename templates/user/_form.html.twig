@@ -27,8 +27,45 @@
     <input type="prenom" class="form-control" id="prenom" placeholder={{ form_widget(form.prenom) }} >
     <small id="nom" class="form-text text-muted">Entrez votre prenom</small>
 </div>
+{%if app.user.roles == "ROLE_HOPITAL" %}
+<div class="form-group">
+    <label for="exampleInputPassword1" class="form-label mt-4">Role</label>
+    <input type="role" class="form-control" id="role" placeholder={{ form_widget(form.role) }} >
+    <small id="role" class="form-text text-muted">Entrez votre role.</small>
+</div>
+    <div class="form-group">
+        <label for="exampleInputPassword1" class="form-label mt-4">Rue</label>
+        <input type="rue" class="form-control" id="rue" placeholder={{ form_widget(form.rue) }} >
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1" class="form-label mt-4">Code Postal</label>
+        <input type="code_postal" class="form-control" id="code_postal" placeholder={{ form_widget(form.code_postal) }} >
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1" class="form-label mt-4">Ville</label>
+        <input type="ville" class="form-control" id="ville" placeholder={{ form_widget(form.ville) }} >
+    </div>
+{% endif %}
+{%if app.user.roles == "ROLE_ETUDIANT" %}
+    <div class="form-group">
+        <label for="exampleInputPassword1" class="form-label mt-4">Domaine étude</label>
+        <input type="domaine_etude" class="form-control" id="domaine_etude" placeholder={{ form_widget(form.domaine_etude) }} >
+        <small id="role" class="form-text text-muted">Entrez votre domaine d'étude.</small>
+    </div>
+{% endif %}
 
+{%if app.user.roles == "ROLE_ADMIN" %}
+<div class="form-group">
+    {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label mt-4'}}) }}
 
+    {% for role in form.roles %}
+        <div class="form-check form-switch">
+            {{ form_widget(role, {'attr': {'class': 'form-check-input role-checkbox'}, 'id': 'role_' ~ role.vars.value}) }}
+            {{ form_label(role, null, {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    {% endfor %}
+    {% endif %}
+</div>
         {% if form.password is defined %}
 
             <label> Password
@@ -40,13 +77,9 @@
                 </div>
             </label>
         {% endif %}
-{% if app.user.role("ROLE_ETUDIANT") %}
-<div class="form-group">
-    <label for="exampleInputPassword1" class="form-label mt-4">Domaine etude</label>
-    <input type="domaine_etude" class="form-control" id="domaine_etude" placeholder={{ form_widget(form.domaine_etude) }} >
-    <small id="nom" class="form-text text-muted">Entrez votre domaine d'étude</small>
-</div>
-{% endif %}
+
+
+
 
 {{ form_widget(form) }}
 

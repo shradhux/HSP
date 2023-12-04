@@ -33,17 +33,17 @@
         {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom'}}) }}
     </div>
     <div class="form-group">
-        {{ form_label(registrationForm.rue, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-        {{ form_widget(registrationForm.rue, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre nom de rue'}}) }}
+        {{ form_label(registrationForm.rue, null, {'label_attr': {'class': 'form-label mt-4 rue-label'}}) }}
+        {{ form_widget(registrationForm.rue, {'attr': {'class': 'form-control rue', 'placeholder': 'Entrez votre nom de rue'}}) }}
     </div>
 
     <div class="form-group">
-        {{ form_label(registrationForm.code_postal, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-        {{ form_widget(registrationForm.code_postal, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre CP'}}) }}
+        {{ form_label(registrationForm.code_postal, null, {'label_attr': {'class': 'form-label mt-4 code_postal-label'}}) }}
+        {{ form_widget(registrationForm.code_postal, {'attr': {'class': 'form-control code_postal', 'placeholder': 'Entrez votre CP'}}) }}
     </div>
     <div class="form-group">
-        {{ form_label(registrationForm.ville, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-        {{ form_widget(registrationForm.ville, {'attr': {'class': 'form-control', 'placeholder': 'Entrez votre ville'}}) }}
+        {{ form_label(registrationForm.ville, null, {'label_attr': {'class': 'form-label mt-4 ville-label'}}) }}
+        {{ form_widget(registrationForm.ville, {'attr': {'class': 'form-control ville', 'placeholder': 'Entrez votre ville'}}) }}
     </div>
 
 
@@ -103,10 +103,20 @@
                 // Masquer ou afficher le champ prenom en conséquence
                 if (etudiantSelected) {
                     $('.role, .role-label').hide();
+                    $('.rue, .rue-label').hide();
+                    $('.code_postal, .code_postal-label').hide();
+                    $('.ville, .ville-label').hide();
+
                 } else {
                     $('.role, .role-label').show();
+                    $('.rue, .rue-label').show();
+                    $('.code_postal, .code_postal-label').show();
+                    $('.ville, .ville-label').show();
                 }
             }
+
+
         });
+
     </script>
 {% endblock %}

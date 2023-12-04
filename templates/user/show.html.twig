@@ -3,7 +3,7 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <h1> Profil</h1>
 
     <table class="table-light" class="text-secondary">
         <tbody>
@@ -13,18 +13,7 @@
 
                 <td>{{ user.email }}</td>
             </tr>
-{#  {% if user.roles is defined %}
-                <tr>
-                    <th>Roles</th>
-                    <td>
-                        {% for role in user.roles %}
-                            {{ role }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endif %}
-#}
-           <tr>
+      <tr>
                 <th>Roles</th>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
             </tr>
@@ -67,8 +56,11 @@
 
         </tbody>
     </table>
-
+    {%if app.user.roles == "ROLE_ADMIN" %}
     <td> <th> <a href="{{ path('app_user_index') }}">
+        <button type="button" class="btn btn-outline-light">RETOUR</button></a></th></td>
+    {% endif %}
+    <td> <th> <a href="{{ path('app_default') }}">
         <button type="button" class="btn btn-outline-light">RETOUR</button></a></th></td>
 
     <td> <th> <a href="{{ path('app_user_edit', {'id': app.user.id}) }}">

@@ -66,43 +66,52 @@ class UserController extends AbstractController
             $isEditingOwnPassword = $isAdmin && $currentUser === $user;
 
             $form = $this->createForm(UserType::class, $user);
-            if (!$currentUser->hasRole("ROLE_ADMIN")){
+            if (!$currentUser->hasRole("ROLE_ADMIN")) {
                 $form->remove("roles");
                 $form->remove("est_valide");
                 $form->remove("isVerified");
-                $form->remove("domaine_etude");
-            }
 
-
-
-            // Si l'utilisateur n'est pas en train de modifier son propre mot de passe, retirez le champ de mot de passe du formulaire
-            if (!$isEditingOwnPassword) {
-                $form->remove('password');
-            }
-
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                // Empêcher un administrateur de modifier le mot de passe des autres utilisateurs
-                if($form->has('roles')){
-                    $user->setRoles([$form->get('roles')->getData()]);
+                if (!$currentUser->hasRole("ROLE_HOPITAL")) {
+                    $form->remove("role");
+                    $form->remove("rue");
+                    $form->remove("code_postal");
+                    $form->remove("ville");
                 }
-                if ($user->getRoles()==["ROLE_ADMIN"]) {
-                    throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier le mot de passe des autres utilisateurs.');
+                if (!$currentUser->hasRole("ROLE_ETUDIANT")) {
+                    $form->remove("domaine_etude");
+
                 }
-                $entityManager->persist($user);
-                $entityManager->flush();
 
-                return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+
+                // Si l'utilisateur n'est pas en train de modifier son propre mot de passe, retirez le champ de mot de passe du formulaire
+                if (!$isEditingOwnPassword) {
+                    $form->remove('password');
+                }
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) {
+                    // Empêcher un administrateur de modifier le mot de passe des autres utilisateurs
+                    if ($form->has('roles')) {
+                        $user->setRoles([$form->get('roles')->getData()]);
+                    }
+                    if ($user->getRoles() == ["ROLE_ADMIN"]) {
+                        throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier le mot de passe des autres utilisateurs.');
+                    }
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+
+                    return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+                }
+
+                return $this->render('user/edit.html.twig', [
+                    'user' => $user,
+                    'form' => $form,
+                ]);
+            } else {
+                return $this->redirectToRoute('app_default');
+                // Gérer le cas où l'utilisateur n'est pas authentifié, par exemple, rediriger vers une page de connexion
             }
-
-            return $this->render('user/edit.html.twig', [
-                'user' => $user,
-                'form' => $form,
-            ]);
-        } else {
-            return $this->redirectToRoute('app_default');
-            // Gérer le cas où l'utilisateur n'est pas authentifié, par exemple, rediriger vers une page de connexion
         }
     }
     #[Route('/valide-compte/{id}', name: 'app_valide_compte')]
