@@ -113,21 +113,40 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/accepterrdv', name: 'app_rendez_vous_accepter_index', methods: ['GET', 'POST'])]
-    public function consultrdv(RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository): Response
+    public function consultrdv(User $user, RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository): Response
     {
+        $lespostulations=[];
+    foreach ($postulerRepository->findAll() as $postulation){
+        if($postulation->getUser()->getId() == $this->getUser()->getId()){
 
+          $lespostulations[] = $postulation;
+        }
+    }
 
-        $rendezVouses = $rendezVousRepository->findBy([
-            'id' => $postulerRepository->findBy(['user' => $this->getUser() ]),
-            'date' => ['not ' => null],
-            'heure' => ['not ' => null]
-        ]);
+        foreach ($lespostulations as $postulations) {
+            $rendezVouses = $rendezVousRepository->findBy([
+                'id' => $postulations->getRendezVous()->getId(),
+
+            ]);
+        }
         //dump($rendezVouses);
 
 
-        return $this->render('rendez_vous/index.html.twig', [
+        return $this->render('rendez_vous/accepter_index.html.twig', [
             'rendez_vouses' => $rendezVouses,
         ]);
     }
 
+    #[Route('{id}/acceptation', name: 'app_rendez_vous_acceptation', methods: ['GET', 'POST'])]
+    public function accepterrdv(Request $request, RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository): Response
+    {
+
+
+        $id = $request->get('id');
+
+
+        return $this->render('rendez_vous/index.html.twig', [
+            'rendez_vouses' => $rendezVousRepository->findAll(),
+        ]);
+    }
 }
