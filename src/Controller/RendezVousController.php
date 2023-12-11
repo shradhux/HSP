@@ -138,15 +138,17 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('{id}/acceptation', name: 'app_rendez_vous_acceptation', methods: ['GET', 'POST'])]
-    public function accepterrdv(Request $request, RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository): Response
+    public function accepterrdv(Request $request, EntityManagerInterface $entityManager , RendezVousRepository $rendezVousRepository,RendezVous $rendezVous, PostulerRepository $postulerRepository): Response
     {
 
 
-        $id = $request->get('id');
+        $rendezVous->setRefUser($this->getUser());
 
 
-        return $this->render('rendez_vous/index.html.twig', [
-            'rendez_vouses' => $rendezVousRepository->findAll(),
-        ]);
+
+
+        $entityManager->persist($rendezVous);
+        $entityManager->flush();
+        return $this->redirectToRoute("app_default");
     }
 }
