@@ -15,7 +15,9 @@
   </tr>
   </thead>
   <tbody>
+
   {% for rendez_vou in rendez_vouses %}
+    {% if rendez_vou.refuser == null %}
   <tr>
     <td>{{ rendez_vou.id }}</td>
     <td>{{ rendez_vou.date ? rendez_vou.date|date('Y-m-d') : '' }}</td>
@@ -25,13 +27,14 @@
       <a href="{{ path('app_rendez_vous_acceptation', {'id': rendez_vou.id}) }}">Accepter le rdv</a>
     </td>
   </tr>
+    {% endif %}
   {% else %}
   <tr>
-    <td colspan="4">no records found</td>
+    <td colspan="4">Pas d'offres de disponible !</td>
   </tr>
   {% endfor %}
   </tbody>
 </table>
 
-<a href="{{ path('app_rendez_vous_new') }}">Create new</a>
+
 {% endblock %}
