@@ -61,23 +61,27 @@ class UserController extends AbstractController
         $currentUser = $this->getUser(); // Récupérer l'utilisateur actuel
 
         if ($currentUser !== null) {
+
             $isAdmin = in_array("ROLE_ADMIN", $currentUser->getRoles());
             // Vérifier si l'utilisateur actuel est un administrateur et s'il tente de modifier son propre mot de passe
             $isEditingOwnPassword = $isAdmin && $currentUser === $user;
 
             $form = $this->createForm(UserType::class, $user);
-            if (!$currentUser->hasRole("ROLE_ADMIN")) {
+
+            if ($currentUser->hasRole("ROLE_ADMIN") == false) {
+
                 $form->remove("roles");
                 $form->remove("est_valide");
                 $form->remove("isVerified");
+            }
 
-                if (!$currentUser->hasRole("ROLE_HOPITAL")) {
+                if ($currentUser->hasRole("ROLE_HOPITAL") == false) {
                     $form->remove("role");
                     $form->remove("rue");
                     $form->remove("code_postal");
                     $form->remove("ville");
                 }
-                if (!$currentUser->hasRole("ROLE_ETUDIANT")) {
+                if ($currentUser->hasRole("ROLE_ETUDIANT" == false)) {
                     $form->remove("domaine_etude");
 
                 }
@@ -95,13 +99,11 @@ class UserController extends AbstractController
                     if ($form->has('roles')) {
                         $user->setRoles([$form->get('roles')->getData()]);
                     }
-                    if ($user->getRoles() == ["ROLE_ADMIN"]) {
-                        throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier le mot de passe des autres utilisateurs.');
-                    }
+
                     $entityManager->persist($user);
                     $entityManager->flush();
 
-                    return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+                    return $this->redirectToRoute('app_user_show', ["id" => $currentUser->getId()], Response::HTTP_SEE_OTHER);
                 }
 
                 return $this->render('user/edit.html.twig', [
@@ -112,7 +114,6 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('app_default');
                 // Gérer le cas où l'utilisateur n'est pas authentifié, par exemple, rediriger vers une page de connexion
             }
-        }
     }
     #[Route('/valide-compte/{id}', name: 'app_valide_compte')]
     public function valideCompte(User $user, Request $request)
