@@ -31,6 +31,16 @@ class ConferenceController extends AbstractController
         ]);
     }
 
+    #[Route('/liste', name: 'app_conference_index_etudiant', methods: ['GET', 'POST'])]
+    public function indexetudiant(ConferenceRepository $conferenceRepository): Response
+    {
+        return $this->render('conference/index.html.twig', [
+            'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+        ]);
+    }
+
+
+
     #[Route('/new', name: 'app_conference_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -146,4 +156,6 @@ class ConferenceController extends AbstractController
 
         return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
