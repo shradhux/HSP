@@ -34,10 +34,13 @@ class ConferenceController extends AbstractController
     #[Route('/new', name: 'app_conference_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $dateerreur = "";
+        $heureerreur = "";
         $conference = new Conference();
         $form = $this->createForm(ConferenceType::class, $conference);
         $form->remove('ref_user');
         $form->handleRequest($request);
+
 
         $user = $this->getUser();
 
@@ -52,8 +55,45 @@ class ConferenceController extends AbstractController
                 $conference->setIsValidated(false);
             }
 
+            $conferenceDate = $conference->getDate();
+
+            if ($conferenceDate->format('N') == 1 || $conferenceDate->format('N') == 7){
+
+            $dateerreur = "Les évènements ne peuvent être créés le lundi et le dimanche, veuillez changer de date";
+
+            }
+
+            if($conference->getHeure() < 8 || $conference->getHeure() > 13){
+
+            $heureerreur = "Les évènements doivent débuter après 8h jusqu'à 12h maximum, veuillez changer l'heure de début";
+
+
+            }
+
+            if ($conference->getDuree() + $conference->getHeure() > 12){
+                $conference->setDuree(12 - $conference->getHeure());
+            }
+
+            if(($heureerreur || $dateerreur) != null){
+                return $this->render('conference/new.html.twig', [
+              "dateerreur" =>   $dateerreur,
+               "heureerreur"=>  $heureerreur ,
+                    'conference' => $conference,
+                    'form' => $form,
+        ]);
+            }
+
+
             $entityManager->persist($conference);
             $entityManager->flush();
+
+
+
+
+
+
+
+
 
             if ($user && in_array('ROLE_ADMIN', $user->getRoles())) {
                 return $this->redirectToRoute('admin_conference_validation_page');

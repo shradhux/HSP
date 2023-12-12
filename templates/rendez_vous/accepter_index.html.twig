@@ -17,7 +17,7 @@
   <tbody>
 
   {% for rendez_vou in rendez_vouses %}
-    {% if rendez_vou.refuser == null %}
+    {% if rendez_vou.refuser.id != null %}
   <tr>
     <td>{{ rendez_vou.id }}</td>
     <td>{{ rendez_vou.date ? rendez_vou.date|date('Y-m-d') : '' }}</td>

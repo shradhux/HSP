@@ -3,9 +3,18 @@
 {% block title %}New Conference{% endblock %}
 
 {% block body %}
-    <h1>Create new Conference</h1>
+    <h1>Nouvelle conférence</h1>
+    {% if dateerreur is defined %}
+    <h2>{{  dateerreur }}</h2>
+    {% endif %}
+
+    {% if heureerreur is defined %}
+    <h2>{{ heureerreur }}</h2>
+    {% endif %}
 
     {{ include('conference/_form.html.twig') }}
 
-    <a href="{{ path('app_conference_index') }}">back to list</a>
+
+
+
 {% endblock %}
