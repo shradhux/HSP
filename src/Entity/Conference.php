@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ConferenceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,6 +43,14 @@ class Conference
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $ref_user = null;
+
+    #[ORM\OneToMany(mappedBy: 'conference', targetEntity: Inscription::class)]
+    private Collection $inscriptions;
+
+    public function __construct()
+    {
+        $this->inscriptions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,5 +154,35 @@ class Conference
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * @return Collection<int, Inscription>
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): static
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions->add($inscription);
+            $inscription->setConference($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): static
+    {
+        if ($this->inscriptions->removeElement($inscription)) {
+            // set the owning side to null (unless already changed)
+            if ($inscription->getConference() === $this) {
+                $inscription->setConference(null);
+            }
+        }
+
+        return $this;
     }
 }

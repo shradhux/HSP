@@ -61,9 +61,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $role = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Inscription::class)]
+    private Collection $inscriptions;
+
     public function __construct()
     {
         $this->postulers = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -279,6 +283,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRole(?string $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inscription>
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): static
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions->add($inscription);
+            $inscription->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): static
+    {
+        if ($this->inscriptions->removeElement($inscription)) {
+            // set the owning side to null (unless already changed)
+            if ($inscription->getUser() === $this) {
+                $inscription->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -66,17 +66,27 @@
     </div>
     {{ form_row(registrationForm.agreeTerms) }}
 
+
+
+
     <button type="submit" class="btn btn-secondary mt-3">S'inscrire</button>
+
     {{ form_end(registrationForm) }}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function () {
+            $('#inscriptionButton').click(function () {
+                $('form').submit();
+            });
+
             updateDomaineEtudeVisibility();
 
             // Écouter les changements dans la sélection du rôle
             $('input.role-checkbox').change(function () {
                 updateDomaineEtudeVisibility();
             });
+
+            // ... (rest of your JavaScript code)
 
             function updateDomaineEtudeVisibility() {
                 // Vérifier si le rôle 'etudiant' est sélectionné
@@ -89,12 +99,15 @@
                     $('.domaine, .domaine-label').show();
                 }
             }
+
             updateRoleVisibility();
 
             // Écouter les changements dans la sélection du rôle
             $('input.role-checkbox').change(function () {
                 updateRoleVisibility();
             });
+
+            // ... (rest of your JavaScript code)
 
             function updateRoleVisibility() {
                 // Vérifier si le rôle 'etudiant' est sélectionné
@@ -106,7 +119,6 @@
                     $('.rue, .rue-label').hide();
                     $('.code_postal, .code_postal-label').hide();
                     $('.ville, .ville-label').hide();
-
                 } else {
                     $('.role, .role-label').show();
                     $('.rue, .rue-label').show();
@@ -114,9 +126,10 @@
                     $('.ville, .ville-label').show();
                 }
             }
-
-
         });
+
+
+
 
     </script>
 {% endblock %}
