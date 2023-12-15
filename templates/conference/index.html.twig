@@ -3,7 +3,7 @@
 {% block title %}Conference index{% endblock %}
 
 {% block body %}
-    <h1>Conference index</h1>
+    <h1>Conference Gestion</h1>
 
     <table class="table">
         <thead>
@@ -28,8 +28,14 @@
                 <td>{{ conference.heure }}</td>
                 <td>{{ conference.duree }}</td>
                 <td>
-                    <a href="{{ path('app_conference_show', {'id': conference.id}) }}">show</a>
-                    <a href="{{ path('app_conference_edit', {'id': conference.id}) }}">edit</a>
+                    <a href="{{ path('app_conference_show', {'id': conference.id}) }}">afficher</a>
+                    <a href="{{ path('app_conference_edit', {'id': conference.id}) }}">editer</a>
+                    {%  if conference.isValidated == 0 %}
+                    <a href="{{ path('app_conference_validate', {'id': conference.id}) }}">valider</a>
+                    {% else %}
+                        Conférence validée !
+                    {% endif %}
+
                 </td>
             </tr>
         {% else %}
@@ -37,10 +43,6 @@
                 <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
-        {% if app.user.roles[0]=="ROLE_ADMIN" %}
-
-        <tr align="center"><th><a href="{{ path('admin_conference_validation_page') }}"><button class="btn btn-outline-secondary" role="button">Valider Conférence</button></a></th> </tr>
-        {% endif %}
         </tbody>
     </table>
 

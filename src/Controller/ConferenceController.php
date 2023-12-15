@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conference;
 use App\Form\ConferenceType;
 use App\Repository\ConferenceRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,18 @@ class ConferenceController extends AbstractController
     {
         return $this->render('conference/conference_index.html.twig', [
             'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+        ]);
+    }
+
+    #[Route('/{id}/valider', name: 'app_conference_validate', methods: ['GET', 'POST'])]
+    public function valider(ConferenceRepository $conferenceRepository, Conference $conference,EntityManagerInterface $entityManager): Response
+    {
+
+        $conference->setIsValidated(true);
+        $entityManager->persist($conference);
+        $entityManager->flush();
+        return $this->render('conference/conference_index.html.twig', [
+            'conferences' => $conferenceRepository->findAll()
         ]);
     }
 
@@ -93,7 +106,7 @@ class ConferenceController extends AbstractController
         ]);
             }
 
-
+            $conference->setRefUser($this->getUser());
             $entityManager->persist($conference);
             $entityManager->flush();
 
@@ -120,13 +133,7 @@ class ConferenceController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'app_conference_show', methods: ['GET'])]
-    public function show(Conference $conference): Response
-    {
-        return $this->render('conference/show.html.twig', [
-            'conference' => $conference,
-        ]);
-    }
+
 
     #[Route('/{id}/edit', name: 'app_conference_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Conference $conference, EntityManagerInterface $entityManager): Response
@@ -157,5 +164,11 @@ class ConferenceController extends AbstractController
         return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
+    #[Route('/{id}', name: 'app_conference_show', methods: ['GET'])]
+    public function show(Conference $conference): Response
+    {
+        return $this->render('conference/show.html.twig', [
+            'conference' => $conference,
+        ]);
+    }
 }
