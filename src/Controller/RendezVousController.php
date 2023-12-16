@@ -115,25 +115,23 @@ class RendezVousController extends AbstractController
     #[Route('/accepterrdv', name: 'app_rendez_vous_accepter_index', methods: ['GET', 'POST'])]
     public function consultrdv(User $user, RendezVousRepository $rendezVousRepository, PostulerRepository $postulerRepository): Response
     {
-        $lespostulations=[];
-    foreach ($postulerRepository->findAll() as $postulation){
-        if($postulation->getUser()->getId() == $this->getUser()->getId()){
 
-          $lespostulations[] = $postulation;
+        $rendezVousAvecUserNull = [];
+        $lesrdv = $postulerRepository->findBy(['user' => $this->getUser()]);
+        $rdvfiltre = $rendezVousRepository->createQueryBuilder('r')
+            ->where('r.ref_user IS NULL')
+            ->getQuery()
+            ->getResult();
+
+        foreach ($lesrdv as $unrdv){
+        foreach ($rdvfiltre as $lerdv){
+if ($lerdv->getId()==$unrdv->getRendezVous()->getId())
+    $rendezVousAvecUserNull[] = $lerdv;
         }
-    }
-
-        foreach ($lespostulations as $postulations) {
-            $rendezVouses = $rendezVousRepository->findBy([
-                'id' => $postulations->getRendezVous()->getId(),
-
-            ]);
         }
-        //dump($rendezVouses);
-
 
         return $this->render('rendez_vous/accepter_index.html.twig', [
-            'rendez_vouses' => $rendezVouses,
+            'rendez_vouses' => $rendezVousAvecUserNull,
         ]);
     }
 
