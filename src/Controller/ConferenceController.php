@@ -70,12 +70,12 @@ class ConferenceController extends AbstractController
         $user = $this->getUser();
 
         if ($user && in_array('ROLE_ADMIN', $user->getRoles())) {
-            // L'administrateur crée la conférence
+
             $conference->setIsValidated(true); // Automatiquement validé par l'administrateur
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Si ce n'est pas un administrateur, définissez isValidated sur false, l'administrateur validera plus tard
+
             if (!$conference->getIsValidated()) {
                 $conference->setIsValidated(false);
             }
@@ -120,12 +120,10 @@ class ConferenceController extends AbstractController
 
 
 
-            if ($user && in_array('ROLE_ADMIN', $user->getRoles())) {
-                return $this->redirectToRoute('admin_conference_validation_page');
-            } else {
+
 
                 return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
-            }
+
         }
 
         return $this->render('conference/new.html.twig', [
