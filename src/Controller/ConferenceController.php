@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conference;
 use App\Form\ConferenceType;
 use App\Repository\ConferenceRepository;
+use App\Repository\InscriptionRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,10 +34,11 @@ class ConferenceController extends AbstractController
     }
 
     #[Route('/liste', name: 'app_conference_index_etudiant', methods: ['GET', 'POST'])]
-    public function indexetudiant(ConferenceRepository $conferenceRepository): Response
+    public function indexetudiant(ConferenceRepository $conferenceRepository, InscriptionRepository $inscriptionRepository): Response
     {
         return $this->render('conference/conference_index.html.twig', [
             'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+            'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()])
         ]);
     }
 
