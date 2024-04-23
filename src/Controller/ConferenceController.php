@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Conference;
 use App\Form\ConferenceType;
+use App\Repository\AmphitheatreRepository;
 use App\Repository\ConferenceRepository;
 use App\Repository\InscriptionRepository;
 use Doctrine\ORM\EntityManager;
@@ -33,31 +34,49 @@ class ConferenceController extends AbstractController
         ]);
     }
 
+
+
+
+
+
+
     #[Route('/liste', name: 'app_conference_index_etudiant', methods: ['GET', 'POST'])]
-    public function indexetudiant(ConferenceRepository $conferenceRepository, InscriptionRepository $inscriptionRepository): Response
+    public function indexetudiant(ConferenceRepository $conferenceRepository, InscriptionRepository $inscriptionRepository, AmphitheatreRepository $amphitheatreRepository): Response
     {
         return $this->render('conference/conference_index.html.twig', [
             'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
-            'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()])
+            'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()]),
+            'inscriptionstotales' => $inscriptionRepository->findAll(),
+            'amphitheatres' => $amphitheatreRepository->findAll()
         ]);
     }
 
+
+
+
+
+
+
+
+
     #[Route('/{id}/valider', name: 'app_conference_validate', methods: ['GET', 'POST'])]
-    public function valider(ConferenceRepository $conferenceRepository, Conference $conference,EntityManagerInterface $entityManager): Response
+    public function valider(ConferenceRepository $conferenceRepository, Conference $conference,EntityManagerInterface $entityManager, InscriptionRepository $inscriptionRepository): Response
     {
 
         $conference->setIsValidated(true);
         $entityManager->persist($conference);
         $entityManager->flush();
         return $this->render('conference/conference_index.html.twig', [
-            'conferences' => $conferenceRepository->findAll()
+            'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+            'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()]),
+            'inscriptionstotales' => $inscriptionRepository->findAll()
         ]);
     }
 
 
 
     #[Route('/new', name: 'app_conference_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,InscriptionRepository $inscriptionRepository, ConferenceRepository $conferenceRepository): Response
     {
         $dateerreur = "";
         $heureerreur = "";
@@ -122,7 +141,11 @@ class ConferenceController extends AbstractController
 
 
 
-                return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_conference_index', [
+                    'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+                    'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()]),
+                    'inscriptionstotales' => $inscriptionRepository->findAll()
+                ], Response::HTTP_SEE_OTHER);
 
         }
 
@@ -136,7 +159,7 @@ class ConferenceController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_conference_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Conference $conference, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Conference $conference, EntityManagerInterface $entityManager, ConferenceRepository$conferenceRepository, InscriptionRepository $inscriptionRepository): Response
     {
         $form = $this->createForm(ConferenceType::class, $conference);
         $form->handleRequest($request);
@@ -144,7 +167,11 @@ class ConferenceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_conference_index', [
+                'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+                'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()]),
+                'inscriptionstotales' => $inscriptionRepository->findAll()
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('conference/edit.html.twig', [
@@ -154,14 +181,18 @@ class ConferenceController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_conference_delete', methods: ['POST'])]
-    public function delete(Request $request, Conference $conference, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Conference $conference, EntityManagerInterface $entityManager, ConferenceRepository $conferenceRepository, InscriptionRepository $inscriptionRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$conference->getId(), $request->request->get('_token'))) {
             $entityManager->remove($conference);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_conference_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_conference_index', [
+            'conferences' => $conferenceRepository->findBy(['isValidated' => true]),
+            'inscriptions' => $inscriptionRepository->findBy(['user' => $this->getUser()]),
+            'inscriptionstotales' => $inscriptionRepository->findAll()
+        ], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}', name: 'app_conference_show', methods: ['GET'])]

@@ -16,6 +16,9 @@ class Amphitheatre
     #[ORM\Column(nullable: true)]
     private ?int $place_libre = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,5 +39,17 @@ class Amphitheatre
     public function __toString()
     {
         return $this->getPlaceLibre();
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
     }
 }

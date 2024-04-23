@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Nom</th>
                 <th>Place_libre</th>
                 <th>actions</th>
             </tr>
@@ -17,6 +18,7 @@
         {% for amphitheatre in amphitheatres %}
             <tr>
                 <td>{{ amphitheatre.id }}</td>
+                <td>{{ amphitheatre.nom }}</td>
                 <td>{{ amphitheatre.placeLibre }}</td>
 
 

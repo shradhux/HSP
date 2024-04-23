@@ -15,7 +15,7 @@ class OffreEmploiType extends AbstractType
             ->add('titre')
             ->add('description')
             ->add('type_contrat')
-            ->add('ref_user')
+
         ;
     }
 

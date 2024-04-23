@@ -13,6 +13,7 @@ class AmphitheatreType extends AbstractType
     {
         $builder
             ->add('place_libre')
+            ->add('nom')
         ;
     }
 

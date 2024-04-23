@@ -66,13 +66,12 @@
     {% if app.user.roles[0]=="ROLE_ADMIN" %}
     <tr align="center"><th><a href="{{ path('app_user_index') }}"><button class="btn btn-outline-primary" role="button">Gestion Utilisateur</button></a></th></tr>
     <tr align="center"><th><a href="{{ path('app_conference_index') }}"><button class="btn btn-outline-secondary" role="button">ADMIN Gestion Conférence</button></a></th> </tr>
-    <tr align="center"><th><a href="{{ path('app_offre_emploi_index') }}"><button class="btn btn-outline-success" role="button">ADMIN Gestion Offre d'emplois</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_rendez_vous_index') }}"><button class="btn btn-outline-info" role="button">ADMIN Gestion Rendez-vous</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_postuler_index') }}"><button class="btn btn-outline-warning" role="button">ADMIN Gestion Postulations</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_validation_index') }}"><button class="btn btn-outline-primary" role="button">ADMIN Valider comptes</button></a></th></tr><tr align="center"><th><a href="{{ path('app_amphitheatre_index') }}"><button class="btn btn-outline-primary" role="button">ADMIN Gestion Amphitheatre</button></a></th></tr>
     {% endif %}
     {% if app.user.roles[0]=="ROLE_HOPITAL" or app.user.roles[0]=="ROLE_ADMIN" %}
-
+        <tr align="center"><th><a href="{{ path('app_offre_emploi_index') }}"><button class="btn btn-outline-success" role="button"> Gestion Offre d'emplois</button></a></th> </tr>
     <tr align="center"><th><a href="{{ path('app_rendez_vous_confirmation') }}"><button class="btn-outline-primary" role="button">Organiser un rendez-vous</button></a></th></tr>
     {% endif %}
     <tr align="center"><th><a href="{{ path('app_conference_index_etudiant')}}"><button class="btn-outline-primary" role="button">Voir les conferences</button></a></th></tr>

@@ -32,6 +32,9 @@
                     <a href="{{ path('app_conference_edit', {'id': conference.id}) }}">editer</a>
                     {%  if conference.isValidated == 0 %}
                     <a href="{{ path('app_conference_validate', {'id': conference.id}) }}">valider</a>
+
+
+
                     {% else %}
                         Conférence validée !
                     {% endif %}

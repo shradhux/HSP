@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\OffreEmploi;
 use App\Entity\Postuler;
+use App\Entity\User;
 use App\Form\OffreEmploiType;
 use App\Repository\OffreEmploiRepository;
 use App\Repository\PostulerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,9 +27,10 @@ class OffreEmploiController extends AbstractController
     }
 
     #[Route('/new', name: 'app_offre_emploi_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $user): Response
     {
         $offreEmploi = new OffreEmploi();
+        $offreEmploi->setRefUser($user->getUser());
         $form = $this->createForm(OffreEmploiType::class, $offreEmploi);
         $form->handleRequest($request);
 
