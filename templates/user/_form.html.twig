@@ -27,7 +27,7 @@
     <input type="prenom" class="form-control" id="prenom" placeholder={{ form_widget(form.prenom) }} >
     <small id="nom" class="form-text text-muted">Entrez votre prenom</small>
 </div>
-{%if app.user.roles == "ROLE_HOPITAL" %}
+{%if app.user.roles[0] == "ROLE_HOPITAL" %}
 <div class="form-group">
     <label for="exampleInputPassword1" class="form-label mt-4">Role</label>
     <input type="role" class="form-control" id="role" placeholder={{ form_widget(form.role) }} >
@@ -46,7 +46,7 @@
         <input type="ville" class="form-control" id="ville" placeholder={{ form_widget(form.ville) }} >
     </div>
 {% endif %}
-{%if app.user.roles == "ROLE_ETUDIANT" %}
+{%if app.user.roles[0] == "ROLE_ETUDIANT" %}
     <div class="form-group">
         <label for="exampleInputPassword1" class="form-label mt-4">Domaine étude</label>
         <input type="domaine_etude" class="form-control" id="domaine_etude" placeholder={{ form_widget(form.domaine_etude) }} >
@@ -54,7 +54,7 @@
     </div>
 {% endif %}
 
-{%if app.user.roles == "ROLE_ADMIN" %}
+{%if app.user.roles[0] == "ROLE_ADMIN" %}
 <div class="form-group">
     {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label mt-4'}}) }}
 

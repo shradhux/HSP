@@ -2,49 +2,57 @@
 
 {% block title %}Log in!{% endblock %}
 
-
 {% block body %}
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="path/to/your/bootstrap/css">
-    <style>
-        .center-text {
-            text-align: center;
-        }
-    </style>
-    </head>
-
-<form method="post">
-
-
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <div class="container mt-5">
+        <!-- Bienvenue sur HSP -->
+        <div class="mb-4">
+            <h1 class="display-4 text-center">Bienvenue sur HSP</h1>
         </div>
-    {% endif %}
 
-    <div class="center-text">
-        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+        <div class="align-items-center justify-content-center" style="height: 150vh;">
+            <div class="card text-white bg-primary mb-3" style="max-width: 60rem; margin: auto;">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/morph/bootstrap.min.css">                        <style>
+                            .center-text {
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+
+                    <form method="post">
+
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="mb-3">
+                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                        {% endif %}
+
+                        <div class="center-text">
+                            <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+                        </div>
+                        <label for="inputEmail">Email</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control " autocomplete="email" required autofocus>
+                        <label for="inputPassword">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control " autocomplete="current-password" required>
+
+                        <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}"
+                        >
+
+                        <button type="submit" class="btn btn-lg btn-primary mt-3">Se connecter </button>
+                        <a href="{{ path('app_forgot_password_request') }}" type="button" class="btn btn-lg btn-primary mt-3">Mot de passe oublié</a>
+                        <a href="{{ path('app_register') }}" type="button" class="btn btn-lg btn-primary mt-3">S'inscrire</a>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <label for="inputEmail">Email</label>
-    <input  type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control " autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control " autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-
-    <button class="btn btn-lg btn-primary mt-3" type="submit">
-        Sign in
-    </button>
-    <a href="{{ path('app_forgot_password_request') }}"type="button" class="btn btn-outline-primary">Mot de passe oublié</a>
-    <a href="{{ path('app_register') }}"type="button" class="btn btn-outline-primary">S'inscrire</a>
-</form>
 {% endblock %}
