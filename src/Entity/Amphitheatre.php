@@ -38,7 +38,7 @@ class Amphitheatre
 
     public function __toString()
     {
-        return $this->getPlaceLibre();
+        return $this->nom;
     }
 
     public function getNom(): ?string

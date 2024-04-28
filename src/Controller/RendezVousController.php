@@ -120,6 +120,7 @@ class RendezVousController extends AbstractController
         $lesrdv = $postulerRepository->findBy(['user' => $this->getUser()]);
         $rdvfiltre = $rendezVousRepository->createQueryBuilder('r')
             ->where('r.ref_user IS NULL')
+            ->andWhere('r.date IS NOT NULL')
             ->getQuery()
             ->getResult();
 
